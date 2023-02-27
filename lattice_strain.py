@@ -1,15 +1,27 @@
 import numpy as np
-from matflow import utils
+import utils
+from utils import import_diff_params
+from utils import tensorcomps_fromaxis
 from defdap.quat import Quat
 from defdap.crystal import CrystalStructure, Phase
 
 def lattice_strain(workflow, phases, axis, tol=5):
+    """
+    Calculate mean for component of elastic strain tensor along the defined axis direction
+    for material points which satisfy Bragg's condition in defined axis direction.
+    
+    Parameters
+    ----------
+    workflow: workflow.hdf5 file imported as python dictionary
+    phases: dictionary containing crystallographic parameters for defined phase_labels
+    axis: axis direction as string eg."X","Y","Z" to test Bragg's condition and choose tensor component.
+    """
     tensor_comp, unit_vector = utils.tensorcomps_fromaxis(axis)
 
     latticestrain = {}
     plane_intensity = {}
     for phase_name, phase in phases.items():
-        print(f"Processing phase {phase_name}...")
+        print(f"Processing phase {phase_name} in {axis} direction...")
 
         # define volume_element_response data from simulation...
         ve_response = workflow.tasks.simulate_volume_element_loading.elements[0].outputs.volume_element_response
@@ -46,7 +58,7 @@ def lattice_strain(workflow, phases, axis, tol=5):
         latticestrain_phase = {}
         plane_intensity_phase = {}
         for plane_label, crystal_plane in phase.diffraction_planes.items():
-            print(f"Processing plane {plane_label} in direction {unit_vector},[{tensor_comp-1},{tensor_comp-1}]...")
+            print(f"Processing plane {plane_label}...")
             latticestrain_plane = []
             plane_intensity_plane = []
             for inc in incs:

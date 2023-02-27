@@ -2,7 +2,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from cycler import cycler
-from matflow import utils
 import matplotlib.pyplot as plt
 
 
@@ -42,11 +41,7 @@ def plot_latticestrain(axs, true_stress, latticestrain, axis, incs="*", xlim=Non
     axs.legend()
     
     
-def plot_true_strain_vs_peakint(axs, plane_intensity, true_strain, axis, xlim=None, ylim=None):
-    phase_names = [
-             'Ti_alpha',
-             'Ti_beta',
-             ]
+def plot_truestrain_peakint(axs, plane_intensity, true_strain, axis, phase_labels, xlim=None, ylim=None):
     
     # maybe the colours are just wrong??
     custom_cycler = (cycler(color=[
@@ -69,7 +64,7 @@ def plot_true_strain_vs_peakint(axs, plane_intensity, true_strain, axis, xlim=No
     
     axs.set_prop_cycle(custom_cycler)
 
-    for phase in phase_names:
+    for phase in phase_labels:
         for plane_label, peakint in plane_intensity[axis][phase].items():
             
             # Elements of X-Ray Diffraction 2nd ed., B.D. Cullity, 1978 ISBN 0-201-01174-3
