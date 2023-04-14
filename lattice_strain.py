@@ -5,7 +5,7 @@ from utils import tensorcomps_fromaxis
 from defdap.quat import Quat
 from defdap.crystal import CrystalStructure, Phase
 
-def lattice_strain(workflow, phases, axis, tol=5):
+def lattice_strain(workflow, data, phase_idx, phase_mask, phases, axis, tol=5):
     """
     Calculate mean for component of elastic strain tensor along the defined axis direction
     for material points which satisfy Bragg's condition in defined axis direction.
@@ -14,7 +14,7 @@ def lattice_strain(workflow, phases, axis, tol=5):
     ----------
     workflow: workflow.hdf5 file imported as python dictionary
     phases: dictionary containing crystallographic parameters for defined phase_labels
-    axis: axis direction as string eg."X","Y","Z" to test Bragg's condition and choose tensor component.
+    axis: axis direction as string eg. "X","Y","Z" to test Bragg's condition and choose tensor component.
     """
     tensor_comp, unit_vector = utils.tensorcomps_fromaxis(axis)
 
@@ -26,13 +26,9 @@ def lattice_strain(workflow, phases, axis, tol=5):
         # define volume_element_response data from simulation...
         ve_response = workflow.tasks.simulate_volume_element_loading.elements[0].outputs.volume_element_response
 
-        # get indicies for desired phase...
-        phase_idx = ve_response['field_data']['phase']['meta']['phase_names'].index(phase_name)
-        phase_mask = ve_response['field_data']['phase']['data'] == phase_idx
-
         # Using left Cauchy-Green defomation tensor for elastic strain...
-        Ee = ve_response['field_data']['epsilon_V^2(F_e)']['data'][:, phase_mask, :, :]
-        Ee_incs = ve_response['field_data']['epsilon_V^2(F_e)']['meta']['increments']
+        Ee = data['data'][:, phase_mask, :, :]
+        Ee_incs = data['meta']['increments']
 
         # get number of increments...
         ori_in = ve_response['field_data']['O']['data']
