@@ -5,7 +5,16 @@ from utils import tensorcomps_fromaxis
 from defdap.quat import Quat
 from defdap.crystal import CrystalStructure, Phase
 
-def lattice_strain(workflow, data, phase_idx, phase_mask, phases, axis, tol=5):
+
+def VE_phase_mask(phases, ve_response):
+    for phase_name, phase in phases.items():
+        # get indicies for desired phase...
+        phase_idx = ve_response['field_data']['phase']['meta']['phase_names'].index(phase_name)
+        phase_mask = ve_response['field_data']['phase']['data'] == phase_idx
+    return phase_idx, phase_mask
+
+
+def lattice_strain(Ee, Ee_incs, oris, ori_incs, phase_idx, phase_mask, phases, axis, tol=5):
     """
     Calculate mean for component of elastic strain tensor along the defined axis direction
     for material points which satisfy Bragg's condition in defined axis direction.
@@ -23,28 +32,17 @@ def lattice_strain(workflow, data, phase_idx, phase_mask, phases, axis, tol=5):
     for phase_name, phase in phases.items():
         print(f"Processing phase {phase_name} in {axis} direction...")
 
-        # define volume_element_response data from simulation...
-        ve_response = workflow.tasks.simulate_volume_element_loading.elements[0].outputs.volume_element_response
-
-        # Using left Cauchy-Green defomation tensor for elastic strain...
-        Ee = data['data'][:, phase_mask, :, :]
-        Ee_incs = data['meta']['increments']
-
-        # get number of increments...
-        ori_in = ve_response['field_data']['O']['data']
-        ori_incs = ve_response['field_data']['O']['meta']['increments']
-
         # ensure increments are correct
         assert Ee_incs == ori_incs
         incs = ori_incs
-        assert ori_in['type'] == 'quat'
-        assert ori_in['quat_component_ordering'] == 'scalar-vector'
-        assert ori_in['unit_cell_alignment']['x'] == 'a' # SAME AS DAMASK
+        assert oris['type'] == 'quat'
+        assert oris['quat_component_ordering'] == 'scalar-vector'
+        assert oris['unit_cell_alignment']['x'] == 'a' # SAME AS DAMASK
 
         # get orientation data for phase...
-        quat_comps = ori_in['quaternions'][:, phase_mask, :]
+        quat_comps = oris['quaternions'][:, phase_mask, :]
         # convert to P = +1 convention
-        if ori_in['P'] == -1:
+        if oris['P'] == -1:
             quat_comps[:, :, 1:] *= -1
         ori = np.empty(quat_comps.shape[:-1], dtype=object)
         for i, row in enumerate(quat_comps):
