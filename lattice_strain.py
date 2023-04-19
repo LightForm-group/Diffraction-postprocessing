@@ -6,11 +6,13 @@ from defdap.quat import Quat
 from defdap.crystal import CrystalStructure, Phase
 
 
-def VE_phase_mask(phases, ve_response):
-    for phase_name, phase in phases.items():
-        # get indicies for desired phase...
-        phase_idx = ve_response['field_data']['phase']['meta']['phase_names'].index(phase_name)
-        phase_mask = ve_response['field_data']['phase']['data'] == phase_idx
+def VE_phase_mask(phase_name, ve_response):
+    """
+    phase_idx: 
+    """
+    # get indicies for desired phase...
+    phase_idx = ve_response['field_data']['phase']['meta']['phase_names'].index(phase_name)
+    phase_mask = ve_response['field_data']['phase']['data'] == phase_idx
     return phase_idx, phase_mask
 
 
@@ -47,7 +49,7 @@ def lattice_strain(Ee, Ee_incs, oris, ori_incs, phase_idx, phase_mask, phases, a
         ori = np.empty(quat_comps.shape[:-1], dtype=object)
         for i, row in enumerate(quat_comps):
             for j, val in enumerate(row):
-                ori[i, j] = Quat(*val) 
+                ori[i, j] = Quat(*val)
 
         latticestrain_phase = {}
         plane_intensity_phase = {}
@@ -67,7 +69,7 @@ def lattice_strain(Ee, Ee_incs, oris, ori_incs, phase_idx, phase_mask, phases, a
                 unit_vector /= np.sqrt(np.dot(unit_vector, unit_vector))
                 # assert np.allclose(measure_dir, measure_dir), f'expect measure dir to be [1, 0, 0]'
                 latticestrain_inc = Ee[inc_idx, lit_up, tensor_comp-1, tensor_comp-1]
-            
+
                 # append lattice strain for plane
                 latticestrain_plane.append(latticestrain_inc)
                 # account for multiplicity of planes here?
