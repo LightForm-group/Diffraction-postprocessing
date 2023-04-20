@@ -16,7 +16,7 @@ def VE_phase_mask(phase_name, ve_response):
     return phase_idx, phase_mask
 
 
-def lattice_strain(Ee, Ee_incs, oris, ori_incs, phase_idx, phase_mask, phases, axis, tol=5):
+def lattice_strain(ve_response, oris, ori_incs, phases, axis, tol=5):
     """
     Calculate mean for component of elastic strain tensor along the defined axis direction
     for material points which satisfy Bragg's condition in defined axis direction.
@@ -32,7 +32,13 @@ def lattice_strain(Ee, Ee_incs, oris, ori_incs, phase_idx, phase_mask, phases, a
     latticestrain = {}
     plane_intensity = {}
     for phase_name, phase in phases.items():
-        print(f"Processing phase {phase_name} in {axis} direction...")
+        print(f"Scanning phase {phase_name} for planes aligned in {axis}...")
+        
+        phase_idx, phase_mask = VE_phase_mask(phase_name, ve_response)
+        
+        # Using left Cauchy-Green defomation tensor for elastic strain...
+        Ee = ve_response['field_data']['epsilon_V^2(F_e)']['data'][:, phase_mask, :, :]
+        Ee_incs = ve_response['field_data']['epsilon_V^2(F_e)']['meta']['increments']
 
         # ensure increments are correct
         assert Ee_incs == ori_incs
