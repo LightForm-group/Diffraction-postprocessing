@@ -11,38 +11,38 @@ Ti_alpha:
     - 2*np.pi/3 # gamma
   diffraction_planes:
     '{10-10}':
-      - plane: [1, 0, -1, 0]
-      - colour: '#FFE800'
-      - marker:  's'
+      array: [1, 0, -1, 0]
+      colour: '#FFE800'
+      marker:  's'
     '{0002}':
-      - plane: [0, 0, 0, 2]
-      - colour: '#9FDF00'
-      - marker:  'h'
+      array: [0, 0, 0, 2]
+      colour: '#9FDF00'
+      marker:  'h'
     '{10-11}':
-      - plane: [1, 0, -1, 1]
-      - colour: '#0DCD52'
-      - marker:  '^'
+      array: [1, 0, -1, 1]
+      colour: '#0DCD52'
+      marker:  '^'
     '{11-20}':
-      - plane: [1, 1, -2, 0]
-      - colour: '#00948D'
-      - marker:  'D'
+      array: [1, 1, -2, 0]
+      colour: '#00948D'
+      marker:  'D'
 # optional planes
 #     '{10-12}':
-#       - plane: [1, 0, -1, 2]
-#       - colour: null
-#       - marker: null
+#       array: [1, 0, -1, 2]
+#       colour: null
+#       marker: null
 #     '{10-13}':
-#       - plane: [1, 0, -1, 2]
-#       - colour: null
-#       - marker: null
+#       array: [1, 0, -1, 2]
+#       colour: null
+#       marker: null
 #     '{11-22}':
-#       - plane: [1, 1, -2, 2]
-#       - colour: null
-#       - marker: null
+#       array: [1, 1, -2, 2]
+#       colour: null
+#       marker: null
 #     '{20-21}':
-#       - plane: [2, 0, -2, 1]
-#       - colour: null
-#       - marker: null
+#       array: [2, 0, -2, 1]
+#       colour: null
+#       marker: null
 
 Ti_beta:
   name: "Ti_beta"
@@ -56,40 +56,40 @@ Ti_beta:
     - np.pi/2 # beta
     - np.pi/2 # gamma
   diffraction_planes:
-    - '{110}':
-      - plane: [1, 1, 0]
-      - colour: '#67001F'
-      - marker:  '+'
-    - '{200}':
-      - plane: [2, 0, 0]
-      - colour: '#DF2179'
-      - marker:  'x'
-    - '{220}':
-      - plane: [2, 2, 0]
-      - colour: '#CDA0CD'
-      - marker:  'x'
+    '{110}':
+      array: [1, 1, 0]
+      colour: '#67001F'
+      marker:  '+'
+    '{200}':
+      array: [2, 0, 0]
+      colour: '#DF2179'
+      marker:  'x'
+    '{220}':
+      array: [2, 2, 0]
+      colour: '#CDA0CD'
+      marker:  'P'
 # optional planes
-#     - '{211}':
-#       - plane: [2, 1, 1]
-#       - colour: null
-#       - marker: null
-#     - '{100}':
-#       - plane: [1, 0, 0]
-#       - colour: null
-#       - marker: null
-#     - '{111}':
-#       - plane: [1, 1, 1]
-#       - colour: null
-#       - marker: null
-#     - '{310}':
-#       - plane: [3, 1, 0]
-#       - colour: null
-#       - marker: null
-#     - '{222}':
-#       - plane: [2, 2, 2]
-#       - colour: null
-#       - marker: null
-#     - '{321}':
-#       - plane: [3, 2, 1]
-#       - colour: null
-#       - marker: null
+#     '{211}':
+#       array: [2, 1, 1]
+#       colour: null
+#       marker: null
+#     '{100}':
+#       array: [1, 0, 0]
+#       colour: null
+#       marker: null
+#     '{111}':
+#       array: [1, 1, 1]
+#       colour: null
+#       marker: null
+#     '{310}':
+#       array: [3, 1, 0]
+#       colour: null
+#       marker: null
+#     '{222}':
+#       array: [2, 2, 2]
+#       colour: null
+#       marker: null
+#     '{321}':
+#       array: [3, 2, 1]
+#       colour: null
+#       marker: null
