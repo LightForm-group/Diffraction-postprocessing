@@ -30,21 +30,21 @@ def import_diff_params(*args):
     """
     yaml_file = open("./diffraction_parameters.yaml", 'r')
     yaml_dict = yaml.safe_load(yaml_file)
-    phases = {}
+    defdap_phases = {}
     for phase in args:
         # write lattice parameters for chosen phase into defdap object
         name = yaml_dict[phase]['name']
         luaeGroup = yaml_dict[phase]['laueGroup']
         spaceGroup = yaml_dict[phase]['spaceGroup']
         latticeParams = yaml_dict[phase]['latticeParams']
-        phases[phase] = Phase(name, luaeGroup, spaceGroup, latticeParams)
+        defdap_phases[phase] = Phase(name, luaeGroup, spaceGroup, latticeParams)
 
         # write diffraction planes for chosen phase into defdap object
         # planes in yaml in cryst direction convention[] should be planes{} in phases string keys
-        phases[phase].diffraction_planes = {}
+        defdap_phases[phase].diffraction_planes = {}
         planes = yaml_dict[phase]['diffraction_planes']
         for plane in planes:
             plane_array = np.array(yaml_dict[phase]['diffraction_planes'][plane]['array'])
-            phases[phase].diffraction_planes[plane] = plane_array
+            defdap_phases[phase].diffraction_planes[plane] = plane_array
     yaml_file.close()
-    return phases
+    return yaml_dict, defdap_phases
