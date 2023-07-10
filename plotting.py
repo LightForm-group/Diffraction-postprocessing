@@ -82,6 +82,8 @@ def plot_truestrain_peakint(axs, plane_intensity, true_strain, axis, phase_label
                 peakint = [intensity / 6 for intensity in peakint]
             elif plane_label == "{110}":
                 peakint = [intensity / 12 for intensity in peakint]
+            elif plane_label == "{220}":
+                peakint = [intensity / 6 for intensity in peakint]
                 
 #             ax.plot(true_strain, peakint, label=plane_label)
             axs.plot(true_strain, peakint, label=plane_label)
@@ -97,7 +99,7 @@ def plot_truestrain_peakint(axs, plane_intensity, true_strain, axis, phase_label
 def plot_lattice_strain_dist_inc(axs, latticestrain, axis, phase, inc, bins=20, xmin=None, xlim=None, ymin=None, ylim=None):
     
     if phase=="Ti_beta":
-        colour=np.array(['#67001F', '#DF2179'], dtype='object')
+        colour=np.array(['#67001F', '#DF2179', '#CDA0CD'], dtype='object')
         
     elif phase=="Ti_alpha":
         colour=np.array(['#FFE800', '#9FDF00', '#0DCD52', '#00948D'], dtype='object')
