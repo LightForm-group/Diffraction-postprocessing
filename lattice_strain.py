@@ -16,7 +16,7 @@ def VE_phase_mask(phase_name, ve_response):
     return phase_idx, phase_mask
 
 
-def lattice_strain(ve_response, oris, ori_incs, phases, axis, tol=5):
+def lattice_strain(phase, phase_name, oris, ori_incs, phase_idx, phase_mask, Ee, Ee_incs, axis, tol=5):
     """
     Calculate mean for component of elastic strain tensor along the defined axis direction
     for material points which satisfy Bragg's condition in defined axis direction.
@@ -28,66 +28,52 @@ def lattice_strain(ve_response, oris, ori_incs, phases, axis, tol=5):
     axis: axis direction as string eg. "X","Y","Z" to test Bragg's condition and choose tensor component.
     """
     tensor_comp, unit_vector = utils.tensorcomps_fromaxis(axis)
+    
+    # ensure increments are correct
+    assert Ee_incs == ori_incs
+    incs = ori_incs
+    assert oris['type'] == 'quat'
+    assert oris['quat_component_ordering'] == 'scalar-vector'
+    assert oris['unit_cell_alignment']['x'] == 'a' # SAME AS DAMASK
 
-    latticestrain = {}
-    plane_intensity = {}
-    for phase_name, phase in phases.items():
-        print(f"Scanning phase {phase_name} for planes aligned in {axis}...")
-        
-        phase_idx, phase_mask = VE_phase_mask(phase_name, ve_response)
-        
-        # Using left Cauchy-Green defomation tensor for elastic strain...
-        Ee = ve_response['field_data']['epsilon_V^2(F_e)']['data'][:, phase_mask, :, :]
-        Ee_incs = ve_response['field_data']['epsilon_V^2(F_e)']['meta']['increments']
+    # get orientation data for phase...
+    quat_comps = oris['quaternions'][:, phase_mask, :]
+    # convert to P = +1 convention
+    if oris['P'] == -1:
+        quat_comps[:, :, 1:] *= -1
+    ori = np.empty(quat_comps.shape[:-1], dtype=object)
+    for i, row in enumerate(quat_comps):
+        for j, val in enumerate(row):
+            ori[i, j] = Quat(*val)
 
-        # ensure increments are correct
-        assert Ee_incs == ori_incs
-        incs = ori_incs
-        assert oris['type'] == 'quat'
-        assert oris['quat_component_ordering'] == 'scalar-vector'
-        assert oris['unit_cell_alignment']['x'] == 'a' # SAME AS DAMASK
+    latticestrain_phase = {}
+    plane_intensity_phase = {}
+    for plane_label, crystal_plane in phase.diffraction_planes.items():
+        print(f"Processing plane {plane_label}...")
+        latticestrain_plane = []
+        plane_intensity_plane = []
+        for inc in incs:
+            try:
+                inc_idx = incs.index(inc)
+            except ValueError:
+                print(f"Increment {inc} does not exist.")
+                continue
+            # determine lit up material points
+            lit_up = find_illuminated_points(ori[inc_idx], crystal_plane, phase, incs, unit_vector, tol)
+            # filter data by illuminated points
+            unit_vector /= np.sqrt(np.dot(unit_vector, unit_vector))
+            # assert np.allclose(measure_dir, measure_dir), f'expect measure dir to be [1, 0, 0]'
+            latticestrain_inc = Ee[inc_idx, lit_up, tensor_comp-1, tensor_comp-1]
 
-        # get orientation data for phase...
-        quat_comps = oris['quaternions'][:, phase_mask, :]
-        # convert to P = +1 convention
-        if oris['P'] == -1:
-            quat_comps[:, :, 1:] *= -1
-        ori = np.empty(quat_comps.shape[:-1], dtype=object)
-        for i, row in enumerate(quat_comps):
-            for j, val in enumerate(row):
-                ori[i, j] = Quat(*val)
+            # append lattice strain for plane
+            latticestrain_plane.append(latticestrain_inc)
+            # account for multiplicity of planes here?
+            plane_intensity_plane.append(np.count_nonzero(lit_up)/6)
+        # append lattice strain for plane to phase
+        latticestrain_phase[plane_label] = latticestrain_plane
+        plane_intensity_phase[plane_label] = plane_intensity_plane
 
-        latticestrain_phase = {}
-        plane_intensity_phase = {}
-        for plane_label, crystal_plane in phase.diffraction_planes.items():
-            print(f"Processing plane {plane_label}...")
-            latticestrain_plane = []
-            plane_intensity_plane = []
-            for inc in incs:
-                try:
-                    inc_idx = incs.index(inc)
-                except ValueError:
-                    print(f"Increment {inc} does not exist.")
-                    continue
-                # determine lit up material points
-                lit_up = find_illuminated_points(ori[inc_idx], crystal_plane, phase, incs, unit_vector, tol)
-                # filter data by illuminated points
-                unit_vector /= np.sqrt(np.dot(unit_vector, unit_vector))
-                # assert np.allclose(measure_dir, measure_dir), f'expect measure dir to be [1, 0, 0]'
-                latticestrain_inc = Ee[inc_idx, lit_up, tensor_comp-1, tensor_comp-1]
-
-                # append lattice strain for plane
-                latticestrain_plane.append(latticestrain_inc)
-                # account for multiplicity of planes here?
-                plane_intensity_plane.append(np.count_nonzero(lit_up)/6)
-            # append lattice strain for plane to phase
-            latticestrain_phase[plane_label] = latticestrain_plane
-            plane_intensity_phase[plane_label] = plane_intensity_plane
-        # append lattice strain for phase to overall
-        latticestrain[phase_name] = latticestrain_phase
-        plane_intensity[phase_name] = plane_intensity_phase
-
-    return latticestrain, plane_intensity
+    return latticestrain_phase, plane_intensity_phase
 
 
 def find_illuminated_points(oris, crystal_plane, phase, incs, measure_dir, tol=5, batch_size=100000):
