@@ -1,46 +1,95 @@
 Ti_alpha:
-  Phase:
-    name: "Ti_alpha"
-    laueGroup: 9
-    spaceGroup: None
-    latticeParams:
-      - 1.0 # a
-      - 1.0 # b
-      - 1.587 # c
-      - np.pi/2 # alpha
-      - np.pi/2 # beta
-      - 2*np.pi/3 # gamma
+  name: "Ti_alpha"
+  laueGroup: 9
+  spaceGroup: None
+  latticeParams:
+    - 1.0       # a
+    - 1.0       # b
+    - 1.587     # c
+    - np.pi/2   # alpha
+    - np.pi/2   # beta
+    - 2*np.pi/3 # gamma
   diffraction_planes:
-    - [1, 0, -1, 0]
-    - [0, 0,  0, 2]
-    - [1, 0, -1, 1]
-    - [1, 1, -2, 0]
-#     - [1, 0, -1, 2] # optional planes
-#     - [1, 0, -1, 3]
-#     - [1, 1, -2, 2]
-#     - [2, 0, -2, 1]
-
+    '{10-10}':
+      array: [1, 0, -1, 0]
+      colour: '#FFE800'
+      marker:  's'
+    '{0002}':
+      array: [0, 0, 0, 2]
+      colour: '#9FDF00'
+      marker:  'h'
+    '{10-11}':
+      array: [1, 0, -1, 1]
+      colour: '#0DCD52'
+      marker:  '^'
+    '{11-20}':
+      array: [1, 1, -2, 0]
+      colour: '#00948D'
+      marker:  'D'
+# optional planes
+#     '{10-12}':
+#       array: [1, 0, -1, 2]
+#       colour: null
+#       marker: null
+#     '{10-13}':
+#       array: [1, 0, -1, 2]
+#       colour: null
+#       marker: null
+#     '{11-22}':
+#       array: [1, 1, -2, 2]
+#       colour: null
+#       marker: null
+#     '{20-21}':
+#       array: [2, 0, -2, 1]
+#       colour: null
+#       marker: null
 
 Ti_beta:
-  Phase:
-    name: "Ti_beta"
-    laueGroup: 11
-    spaceGroup: 229
-    latticeParams:
-      - 1.0 # a
-      - 1.0 # b
-      - 1.0 # c
-      - np.pi/2 # alpha
-      - np.pi/2 # beta
-      - np.pi/2 # gamma
+  name: "Ti_beta"
+  laueGroup: 11
+  spaceGroup: 229
+  latticeParams:
+    - 1.0 # a
+    - 1.0 # b
+    - 1.0 # c
+    - np.pi/2 # alpha
+    - np.pi/2 # beta
+    - np.pi/2 # gamma
   diffraction_planes:
-    - [1, 1, 0]
-    - [2, 0, 0]
-#     - [2, 2, 0] # optional planes
-#     - [2, 1, 1]
-#     - [1, 0, 0]
-#     - [1, 1, 1]
-#     - [2, 2, 0]
-#     - [3, 1, 0]
-#     - [2, 2, 2]
-#     - [3, 2, 1]
+    '{110}':
+      array: [1, 1, 0]
+      colour: '#67001F'
+      marker:  '+'
+    '{200}':
+      array: [2, 0, 0]
+      colour: '#DF2179'
+      marker:  'x'
+    '{220}':
+      array: [2, 2, 0]
+      colour: '#CDA0CD'
+      marker:  'P'
+# optional planes
+#     '{211}':
+#       array: [2, 1, 1]
+#       colour: null
+#       marker: null
+#     '{100}':
+#       array: [1, 0, 0]
+#       colour: null
+#       marker: null
+#     '{111}':
+#       array: [1, 1, 1]
+#       colour: null
+#       marker: null
+#     '{310}':
+#       array: [3, 1, 0]
+#       colour: null
+#       marker: null
+#     '{222}':
+#       array: [2, 2, 2]
+#       colour: null
+#       marker: null
+#     '{321}':
+#       array: [3, 2, 1]
+#       colour: null
+#       marker: null
