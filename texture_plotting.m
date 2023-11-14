@@ -16,12 +16,17 @@ mrd_max = 10;
 [cs] = phases(phase); % returns phase parameters
 
 
-%% ---  Define path to workflow --- %%
-HDF_filepath = '/Users/user/Desktop/iCSF-home/postprocessing/Ti64_alpha_TEST_2023-11-02-101645/workflow.hdf5';
+%% ---  Define path to workflow/result file --- %%
+% MUST give exact path to dir containing .hdf5 file
+HDF_filepath = '/Users/user/Desktop/iCSF-home/postprocessing/Ti64_alpha_randtext_TEST_2023-11-03-143615/task_4_simulate_volume_element_loading/';
 % -------------------- %
 
 % load data from workflow. must specify phase
-quat_data = load_workflow(HDF_filepath, phase);
+% quat_data = load_workflow(strcat(HDF_filepath,'workflow.hdf5'), phase);
+
+% load data from damask geom_load.hdf5 file. must specify phase
+quat_data = load_result(strcat(HDF_filepath,'geom_load.hdf5'), phase);
+
 %% --- Define path to quaternion.txts --- %%
 % uncomment line below for
 % path_to_txts = '/Users/user/Desktop/iCSF-home/postprocessing/Ti64_alpha_TEST_2023-11-02-101645/task_4_simulate_volume_element_loading/Ti_alpha_oris/';
