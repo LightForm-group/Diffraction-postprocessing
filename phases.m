@@ -20,7 +20,7 @@ function [cs] = phases(phase)
     end
     
     if isequal(phase, 'Al')
-        cs = 0
+        cs = crystalSymmetry.load('Al-Aluminum.cif')
     end
     
     fprintf("Got parameters for phase: %s\n", phase)

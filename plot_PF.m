@@ -9,12 +9,17 @@ function [pf] = plot_PF(ori, odf, phase, oriColors, mrd_max)
         %PF = figure();
         hkil = [Miller(0,0,0,2,odf.CS), Miller(1,0,-1,0,odf.CS), Miller(1,1,-2,0,odf.CS)]; % include hkil figures here
         plotPDF(odf, hkil,'antipodal', 'contourf', 0:0.1:mrd_max, 'minmax') % plot with contouring
-%         plotPDF(ori, hkil, 'antipodal', 'property', oriColors, 'minmax'); % plot IPF color points
+        % plotPDF(ori, hkil, 'antipodal', 'property', oriColors, 'minmax'); % plot IPF color points
     elseif contains(phase, 'beta')
         %PF = figure();
         hkil = [Miller(0,0,1,odf.CS), Miller(1,1,0,odf.CS), Miller(1,1,1,odf.CS)]; % include hkil figures here
         plotPDF(odf, hkil,'antipodal', 'contourf', 0:0.1:mrd_max, 'minmax') % plot with contouring
 %         plotPDF(ori, hkil, 'antipodal', 'property', oriColors, 'minmax'); % plot IPF color points
+    elseif contains(phase, 'Al')
+            %PF = figure();
+            hkil = [Miller(0,0,1,odf.CS), Miller(1,1,0,odf.CS), Miller(1,1,1,odf.CS)]; % include hkil figures here
+            plotPDF(odf, hkil,'antipodal', 'contourf', 0:3:mrd_max, 'minmax') % plot with contouring
+            % plotPDF(ori, hkil, 'antipodal', 'property', oriColors, 'minmax'); % plot IPF color points
     end
     
     text(vector3d.X,'X','VerticalAlignment','bottom'); % moving the vector3d axis labels outside of the hemisphere boundary

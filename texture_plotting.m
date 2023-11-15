@@ -1,6 +1,6 @@
 %% Plot pole figures/ODF sections from matflow workflow %%
 
-addpath '/Users/user/Documents/MATLAB/mtex-5.7.0'
+addpath 'C:/MATLAB/mtex-5.3'
 % addpath '/Users/user/Documents/MATLAB/mtex-5.8.2'
 startup_mtex
 clear all
@@ -10,7 +10,7 @@ setMTEXpref('FontSize', 18);
 %% === load phases: === %
 
 % --- User defined --- %
-phase = 'Ti_alpha'; % phase keys in phases.m
+phase = 'Al'; % phase keys in phases.m
 mrd_max = 10;
 % -------------------- %
 [cs] = phases(phase); % returns phase parameters
@@ -18,7 +18,7 @@ mrd_max = 10;
 
 %% ---  Define path to workflow/result file --- %%
 % MUST give exact path to dir containing .hdf5 file
-HDF_filepath = '/Users/user/Desktop/iCSF-home/postprocessing/Ti64_alpha_randtext_TEST_2023-11-03-143615/task_4_simulate_volume_element_loading/';
+HDF_filepath = 'C:/MatFlow/';
 % -------------------- %
 
 % load data from workflow. must specify phase
