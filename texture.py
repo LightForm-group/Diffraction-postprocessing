@@ -27,7 +27,7 @@ def write_quat_txts(workflow_path, phase):
             oris = workflow.tasks[tasknum].elements[0].outputs.volume_element_response['phase_data'][phase+'_orientations']['data']['quaternions']
     
             n_incs = oris.shape[0] # oris=(n_incs, n_quats, n_quatcomps)
-            for inc in range(0, n_incs):
+            for inc in tqdm(range(0, n_incs)):
                 quat_txt = open(workflow_path+"/task_"+str(tasknum+1)+"_"+workflow.tasks[tasknum].unique_name+"/"+phase+"_oris/"+phase+"_inc"+str(inc)+"_oris.txt",'w')
                 quat_txt.write("xyzw\n")
         
