@@ -17,24 +17,24 @@ mrd_max = 3;
 
 %% ---  Define path to workflow/result file --- %%
 % MUST give exact path to dir containing .hdf5 file
-% HDF_filepath = ['/Users/user/Desktop/iCSF-home/postprocessing/' ...
-% '034_Ti64_TIFUN-T4_TD_910C_elongated_TensionY64x_1mms-1_Xprism_alt3_CRSS_13_150_150_0_0_0_240_2023-11-16-143355/'];
+HDF_filepath = ['/Users/user/Desktop/iCSF-home/postprocessing/' ...
+'034_Ti64_TIFUN-T4_TD_910C_elongated_TensionY64x_1mms-1_Xprism_alt3_CRSS_13_150_150_0_0_0_240_2023-11-16-143355/'];
 % -------------------- %
 
 % load data from workflow. must specify phase
-% quat_data = load_workflow(strcat(HDF_filepath,'workflow.hdf5'), phase);
+quat_data = load_workflow(strcat(HDF_filepath,'workflow.hdf5'), phase);
 
 % load data from damask geom_load.hdf5 file. must specify phase
 % quat_data = load_result(strcat(HDF_filepath,'geom_load.hdf5'), phase);
 
-% path_to_results = HDF_filepath;
+path_to_results = HDF_filepath;
 
 %% --- Define path to quaternion.txts --- %%
 % uncomment line below for
-path_to_txts = '/Users/user/Desktop/iCSF-home/postprocessing/Ti64_VF75a-25b_randtext64xequiaxed_multipass-rollingZY_p1s-1_2023-11-28-122543/task_5_simulate_volume_element_loading/element_3/Ti_alpha/';
+% path_to_txts = '/Users/user/Desktop/iCSF-home/postprocessing/Ti64_VF75a-25b_randtext64xequiaxed_multipass-rollingZY_p1s-1_2023-11-28-122543/task_5_simulate_volume_element_loading/element_3/Ti_alpha/';
 % -------------------- %
 
-path_to_results = path_to_txts;
+% path_to_results = path_to_txts;
 %% loop over increments...
 n_incs = 100;
 
@@ -44,12 +44,12 @@ for inc = 1:1:n_incs
     fprintf("\nInc %s:\n", increment);
 
     % Define path to quaternion.txt files...
-    ori_path = strcat(path_to_txts, phase, '_inc', increment, '_oris.txt')
+%     ori_path = strcat(path_to_txts, phase, '_inc', increment, '_oris.txt')
     % Read the quaternions from the txt file
-    fid = fopen(ori_path);
-    quat_data = textscan(fid, '%f%f%f%f', 'HeaderLines', 1, 'CollectOutput', 1);
-    quat_data = quat_data{:};
-    fid = fclose(fid);
+%     fid = fopen(ori_path);
+%     quat_data = textscan(fid, '%f%f%f%f', 'HeaderLines', 1, 'CollectOutput', 1);
+%     quat_data = quat_data{:};
+%     fid = fclose(fid);
 %     q = quaternion(transpose(quat_data(:, :, inc))); % from HDF5
     q = quaternion(transpose(quat_data)); % from quat.txt
     

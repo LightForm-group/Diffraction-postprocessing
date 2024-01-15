@@ -16,11 +16,11 @@ function [cs] = phases(phase)
     end
 
     if isequal(phase, 'Ni-gamma')
-        cs = crystalSymmetry('m-3m', [3.6 3.6 3.6], 'mineral', 'Ni-superalloy', 'color', [0.53 0.81 0.98]);
+        cs = crystalSymmetry('m-3m', [3.6 3.6 3.6], 'mineral', 'Ni-superalloy', 'color', [0.53 0.81 0.98]); % FCC
     end
     
     if isequal(phase, 'Al')
-        cs = 0
+        cs = crystalSymmetry('m-3m', [4 4 4], 'mineral', 'Aluminium', 'color', [0.53 0.81 0.98]); % FCC
     end
     
     fprintf("Got parameters for phase: %s\n", phase)
