@@ -13,8 +13,8 @@ function [odfsection] = odfsection(ori, odf, slice, oriColors, mrd_max)
     f = gcm;
     for i=1:length(f.children)
      sp = getappdata(f.children(i),'sphericalPlot');
-     sp.TR.Position = [1.2, 1, 1];               % slice label position
-     sp.TL.Position=[1.05, 0.3, 1];               % max label posn
-     sp.BL.Visible='off';                         % get rid of min
+     sp.TR.Position = [1.1, 1, 1];               % slice label position
+     sp.TL.Position=[1.05, 0.3, 1];                 % max label posn
+     sp.BL.Visible='off';                        % get rid of min
     end
 end

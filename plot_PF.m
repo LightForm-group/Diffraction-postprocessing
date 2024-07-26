@@ -3,22 +3,24 @@ function [pf] = plot_PF(ori, odf, phase, oriColors, mrd_max)
         
     % plotting convention for rolling pole figures
     setMTEXpref('xAxisDirection','north');
-    setMTEXpref('zAxisDirection','intoPlane');
+%     setMTEXpref('yAxisDirection','intoPlane');
+%     setMTEXpref('zAxisDirection','east');
 
     if contains(phase, 'alpha')
         %PF = figure();
         hkil = [Miller(0,0,0,2,odf.CS), Miller(1,0,-1,0,odf.CS), Miller(1,1,-2,0,odf.CS)]; % include hkil figures here
-        plotPDF(odf, hkil,'antipodal', 'contourf', 0:0.1:mrd_max, 'minmax') % plot with contouring
-%         plotPDF(ori, hkil, 'antipodal', 'property', oriColors, 'minmax'); % plot IPF color points
+%         plotPDF(odf, hkil,'antipodal', 'contourf', 0:0.1:mrd_max, 'minmax') % plot with contouring
+        plotPDF(ori, hkil, 'antipodal', 'property', oriColors, 'minmax'); % plot IPF color points
     elseif contains(phase, 'beta')
         %PF = figure();
         hkil = [Miller(0,0,1,odf.CS), Miller(1,1,0,odf.CS), Miller(1,1,1,odf.CS)]; % include hkil figures here
-        plotPDF(odf, hkil,'antipodal', 'contourf', 0:0.1:mrd_max, 'minmax') % plot with contouring
-%         plotPDF(ori, hkil, 'antipodal', 'property', oriColors, 'minmax'); % plot IPF color points
+%         plotPDF(odf, hkil,'antipodal', 'contourf', 0:0.1:mrd_max, 'minmax') % plot with contouring
+        plotPDF(ori, hkil, 'antipodal', 'property', oriColors, 'minmax', 'points', 100000); % plot IPF color points
     end
     
     text(vector3d.X,'X','VerticalAlignment','bottom'); % moving the vector3d axis labels outside of the hemisphere boundary
-    text(vector3d.Y,'Y','HorizontalAlignment','left');
+%     text(vector3d.Y,'Y','HorizontalAlignment','left');
+%     text(vector3d.Z,'Z','HorizontalAlignment','left');
     f = gcm; % moving up the hkil labels to make room for the rolling direction labels
     
     for i = 1:length(f.children)

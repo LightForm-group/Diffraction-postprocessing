@@ -94,29 +94,3 @@ def plot_truestrain_peakint(axs, plane_intensity, true_strain, axis, phase_label
     axs.set_ylabel("Material Point Count")
     axs.set_ylim([None, ylim])
     axs.legend()
-    
-    
-def plot_lattice_strain_dist_inc(axs, latticestrain, axis, phase, inc, bins=20, xmin=None, xlim=None, ymin=None, ylim=None):
-    
-    if phase=="Ti_beta":
-        colour=np.array(['#67001F', '#DF2179', '#CDA0CD'], dtype='object')
-        
-    elif phase=="Ti_alpha":
-        colour=np.array(['#FFE800', '#9FDF00', '#0DCD52', '#00948D'], dtype='object')
-
-    print(f"phase: {phase} Direction: {axis}")
-    for plane_num, plane in enumerate(latticestrain[axis][phase].keys()):
-        print(f"\tplane: {plane}\tlattice strain ")
-        
-        # calculate how many numbers within stdev around mean
-        lattstrain_dist = latticestrain[axis][phase][plane][inc]
-        axs.hist(lattstrain_dist*1e6, bins=bins,
-                alpha=0.4, color=colour[plane_num],
-                label=plane)
-
-    axs.legend()
-    axs.title.set_text(f"{axis}")
-    axs.set_xlabel("Lattice Strain")
-    axs.set_xlim(xmin, xlim)
-    axs.set_ylabel("Measurements")
-    axs.set_ylim(ymin, ylim)
